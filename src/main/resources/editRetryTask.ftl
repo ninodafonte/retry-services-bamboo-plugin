@@ -1,0 +1,1 @@
+[@ww.checkbox labelKey="retryPlugin.checkboxEnabled" name="checkboxEnabled" toggle='true' /]

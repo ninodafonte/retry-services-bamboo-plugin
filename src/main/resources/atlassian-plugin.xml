@@ -1,0 +1,35 @@
+<atlassian-plugin key="${project.groupId}.${project.artifactId}" name="${project.name}" plugins-version="2">
+    <plugin-info>
+        <description>${project.description}</description>
+        <version>${project.version}</version>
+        <vendor name="${project.organization.name}" url="${project.organization.url}" />
+    </plugin-info>
+
+    <!-- internationalize your plugin -->
+    <resource type="i18n" name="Retry Plugin language" location="english"/>
+
+    <taskType name="Retry Task" class="com.aboutcoders.atlassian.bamboo.RetryTask" key="retryTaskType">
+      <description>Retry Build Task</description>
+      <configuration class="com.aboutcoders.atlassian.bamboo.RetryTaskConfigurator"/>
+      <resource type="freemarker" name="edit" location="editRetryTask.ftl"/>
+    </taskType>
+
+    <component-import key="transactionTemplate">
+        <description>Import the com.atlassian.sal.api.transaction.TransactionTemplate</description>
+        <interface>com.atlassian.sal.api.transaction.TransactionTemplate</interface>
+    </component-import>
+
+    <buildProcessorServer key="retryPluginPostBuild" name="Retry Automatic Build" class="com.aboutcoders.atlassian.bamboo.RetryPostBuild">
+        <skipIfFailed>false</skipIfFailed>
+        <description>Automatic retry task if build failed (for retry task types).</description>
+    </buildProcessorServer>
+
+    <bambooEventListener key="buildCompletedCustomListener" name="Build Complete Notification Listener" class="com.aboutcoders.atlassian.bamboo.BuildCompleteCustomListener">
+        <description>Listens for completed build</description>
+    </bambooEventListener>
+
+    <notificationType key="unknownBuildComplete" name="All Unknown Build Completed" weight="40" class="com.aboutcoders.atlassian.bamboo.UnknownBuildNotificationType">
+        <description>Notification sent for every build in UNKNOWN status</description>
+    </notificationType>
+
+</atlassian-plugin>
